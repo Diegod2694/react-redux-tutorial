@@ -1,6 +1,19 @@
 // src/js/store/index.js
-import { createStore } from "redux";
+import { 
+  createStore,
+  applyMiddleware,
+  compose
+} from "redux";
 import rootReducer from "../reducers/index";
-const store = createStore(rootReducer);
-store.subscribe(() => console.log('Look ma, Redux!!'))
+import { forbiddenWordsMiddleware } from "../middleware";
+
+const storeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(
+  rootReducer,
+  storeEnhancers(applyMiddleware(forbiddenWordsMiddleware))
+);
+
+// store.subscribe(() => console.log('Look ma, Redux!!'))
+
 export default store;
